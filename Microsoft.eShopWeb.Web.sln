@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B8ACC65E-E0E5-493F-AA82-AAC34C5599AC}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Microsoft.eShopWeb.Web", "src\Microsoft.eShopWeb.Web\Microsoft.eShopWeb.Web.fsproj", "{D5C46D1E-AD85-4B54-97AC-901DF2CB7F07}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5C46D1E-AD85-4B54-97AC-901DF2CB7F07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5C46D1E-AD85-4B54-97AC-901DF2CB7F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5C46D1E-AD85-4B54-97AC-901DF2CB7F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5C46D1E-AD85-4B54-97AC-901DF2CB7F07}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D5C46D1E-AD85-4B54-97AC-901DF2CB7F07} = {B8ACC65E-E0E5-493F-AA82-AAC34C5599AC}
+	EndGlobalSection
+EndGlobal
