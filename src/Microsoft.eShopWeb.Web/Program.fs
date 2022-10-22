@@ -6,6 +6,7 @@ open Falco.Routing
 open Falco.HostBuilder
 open Microsoft.AspNetCore.Builder
 open System
+open Falco.Markup
 
 let getById =
     fun (repository) -> fun (id: Guid) -> repository |> List.tryFind (fun x -> x.Id = id)
@@ -30,6 +31,15 @@ let responseHandler =
 let exceptionHandler: HttpHandler =
     Response.withStatusCode 500 >> Response.ofPlainText "Server error"
 
+let htmlHandler: HttpHandler =
+    let html =
+        Elem.html
+            [ Attr.lang "en" ]
+            [ Elem.head [] []
+              Elem.body [] [ Elem.h1 [] [ Text.raw "Welcome to the F# Shop!" ] ] ]
+
+    Response.ofHtml html
+
 [<EntryPoint>]
 let main args =
     webHost args {
@@ -37,7 +47,7 @@ let main args =
         use_ifnot FalcoExtensions.IsDevelopment (FalcoExtensions.UseFalcoExceptionHandler exceptionHandler)
 
         endpoints
-            [ get "/" (Response.ofPlainText "Welcome to the F# Shop!")
+            [ get "/" htmlHandler
 
               get "/catalogItems/{id:guid}" (Request.mapRoute getCatalogItemByIdFromRoute responseHandler) ]
     }
