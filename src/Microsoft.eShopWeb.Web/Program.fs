@@ -1,55 +1,49 @@
-module Microsoft.eShopWeb.Web.Program
+namespace Microsoft.eShopWeb.Web
 
-open Domain
-open Falco
-open Falco.Routing
-open Falco.HostBuilder
-open Microsoft.AspNetCore.Builder
-open System
-open Falco.Markup
+module Program =
 
-let getById =
-  fun (repository) -> fun (id: Guid) -> repository |> List.tryFind (fun x -> x.Id = id)
+  open Domain
+  open Falco
+  open Falco.Routing
+  open Falco.HostBuilder
+  open Microsoft.AspNetCore.Builder
+  open System
+  open Microsoft.eShopOnWeb.Web
 
-let getCatalogItemByIdFromRoute =
-  fun (route: RouteCollectionReader) ->
-    let getCatalogItem = getById catalogItems
-    route.TryGetGuid "id" |> Option.bind getCatalogItem
+  let getById =
+    fun (repository) -> fun (id: Guid) -> repository |> List.tryFind (fun x -> x.Id = id)
 
-let notFoundHandler: HttpHandler =
-  Response.withStatusCode 404 >> Response.ofPlainText "Not found"
+  let getCatalogItemByIdFromRoute =
+    fun (route: RouteCollectionReader) ->
+      let getCatalogItem = getById catalogItems
+      route.TryGetGuid "id" |> Option.bind getCatalogItem
 
-let responseHandler =
-  fun (value) ->
-    match value with
-    | Some x -> Response.ofJson x
-    | None -> notFoundHandler
+  let notFoundHandler: HttpHandler =
+    Response.withStatusCode 404 >> Response.ofPlainText "Not found"
 
-// ------------
-// Exception Handler
-// ------------
-let exceptionHandler: HttpHandler =
-  Response.withStatusCode 500 >> Response.ofPlainText "Server error"
+  let responseHandler =
+    fun (value) ->
+      match value with
+      | Some x -> Response.ofJson x
+      | None -> notFoundHandler
 
-let htmlHandler: HttpHandler =
-  let html =
-    Elem.html
-      [ Attr.lang "en" ]
-      [ Elem.head [] []
-        Elem.body [] [ Elem.h1 [] [ Text.raw "Welcome to the F# Shop!" ] ] ]
+  // ------------
+  // Exception Handler
+  // ------------
+  let exceptionHandler: HttpHandler =
+    Response.withStatusCode 500 >> Response.ofPlainText "Server error"
 
-  Response.ofHtml html
+  [<EntryPoint>]
+  let main args =
+    webHost args {
+      use_if FalcoExtensions.IsDevelopment DeveloperExceptionPageExtensions.UseDeveloperExceptionPage
+      use_ifnot FalcoExtensions.IsDevelopment (FalcoExtensions.UseFalcoExceptionHandler exceptionHandler)
+      use_static_files
 
-[<EntryPoint>]
-let main args =
-  webHost args {
-    use_if FalcoExtensions.IsDevelopment DeveloperExceptionPageExtensions.UseDeveloperExceptionPage
-    use_ifnot FalcoExtensions.IsDevelopment (FalcoExtensions.UseFalcoExceptionHandler exceptionHandler)
+      endpoints
+        [ get "/" Home.homeHandler
 
-    endpoints
-      [ get "/" htmlHandler
+          get "/catalogItems/{id:guid}" (Request.mapRoute getCatalogItemByIdFromRoute responseHandler) ]
+    }
 
-        get "/catalogItems/{id:guid}" (Request.mapRoute getCatalogItemByIdFromRoute responseHandler) ]
-  }
-
-  0
+    0

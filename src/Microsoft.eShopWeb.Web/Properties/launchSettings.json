@@ -1,0 +1,28 @@
+{
+  "profiles": {
+    "dotnet run": {
+      "commandName": "Project",
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7055",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORT": "7055",
+        "DOTNET_WATCH_RESTART_ON_RUDE_EDIT": "true"
+      }
+    },
+    "dotnet watch": {
+      "commandName": "Executable",
+      "executablePath": "dotnet",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "workingDirectory": "$(ProjectDir)",
+      "commandLineArgs": "watch",
+      "applicationUrl": "https://localhost:7055",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORT": "7055",
+        "DOTNET_WATCH_RESTART_ON_RUDE_EDIT": "true"
+      }
+    }
+  }
+}
