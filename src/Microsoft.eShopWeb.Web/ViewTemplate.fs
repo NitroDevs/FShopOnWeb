@@ -13,13 +13,14 @@ module ViewTemplate =
 
   let headTemplate elems = Elem.head [] elems
 
-  let head metadata = headTemplate (styles @ meta metadata)
+  type XmlHeadNode = XmlNode
+  let head (metadata) : XmlHeadNode = headTemplate (styles @ meta metadata)
 
-
-  let bodyTemplate elems = Elem.body [] elems
+  type XmlBodyNode = XmlNode
+  let bodyTemplate (elems) : XmlBodyNode = Elem.body [] elems
 
   let body elems = bodyTemplate elems
 
 
-  let layout head body =
+  let layout (head: XmlHeadNode) (body: XmlBodyNode) =
     Elem.html [ Attr.lang "en" ] [ head; body ]
