@@ -26,6 +26,20 @@
       "problemMatcher": "$msCompile"
     },
     {
+      "label": "watch",
+      "command": "dotnet",
+      "detail": "Start the Falco application in 'watch' mode",
+      "type": "process",
+      "options": {
+        "cwd": "${workspaceFolder}/src/Microsoft.eShopWeb.Web/",
+        "env": {
+          "DOTNET_WATCH_RESTART_ON_RUDE_EDIT": "true"
+        }
+      },
+      "args": ["watch", "run", "--no-hot-reload"],
+      "problemMatcher": "$msCompile"
+    },
+    {
       "label": "build",
       "command": "dotnet",
       "type": "shell",
