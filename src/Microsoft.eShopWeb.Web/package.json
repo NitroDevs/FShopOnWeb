@@ -1,0 +1,30 @@
+{
+  "name": "microsoft.fshopweb.web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "env-cmd -f .env.development postcss ./src/scss/index.scss -o ./wwwroot/css/site.css -w",
+    "build": "env-cmd -f .env postcss ./src/scss/index.scss -o ./wwwroot/css/site.css"
+  },
+  "engines": {
+    "node": ">=16.13.1 <17"
+  },
+  "keywords": [],
+  "author": "Sean G. Wright <sean@seangwright.me> (https://www.seangwright.me/)",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "5.2.2"
+  },
+  "devDependencies": {
+    "@csstools/postcss-sass": "5.0.1",
+    "@fullhuman/postcss-purgecss": "5.0.0",
+    "autoprefixer": "10.4.13",
+    "cssnano": "5.1.13",
+    "env-cmd": "10.1.0",
+    "postcss": "8.4.18",
+    "postcss-cli": "10.0.0",
+    "purgecss": "5.0.0",
+    "sass": "1.55.0"
+  }
+}

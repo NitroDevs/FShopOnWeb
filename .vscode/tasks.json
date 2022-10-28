@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "restore tools",
+      "label": "dotnet: restore tools",
       "command": "dotnet",
       "type": "shell",
       "args": ["tool", "restore"],
@@ -15,7 +15,7 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "restore packages",
+      "label": "dotnet: restore packages",
       "command": "dotnet",
       "type": "shell",
       "args": ["restore"],
@@ -26,7 +26,7 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "watch",
+      "label": "dotnet: watch",
       "command": "dotnet",
       "detail": "Start the Falco application in 'watch' mode",
       "type": "process",
@@ -40,14 +40,12 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "build",
+      "label": "dotnet: build",
       "command": "dotnet",
       "type": "shell",
       "args": [
         "build",
-        // Ask dotnet build to generate full paths for file names.
         "/property:GenerateFullPaths=true",
-        // Do not generate summary otherwise it leads to duplicate errors in Problems panel
         "/consoleloggerparameters:NoSummary"
       ],
       "group": "build",
@@ -55,6 +53,29 @@
         "reveal": "silent"
       },
       "problemMatcher": "$msCompile"
+    },
+    {
+      "type": "npm",
+      "script": "install",
+      "path": "src/Microsoft.eShopWeb.Web",
+      "problemMatcher": [],
+      "label": "npm: install"
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "path": "src/Microsoft.eShopWeb.Web",
+      "problemMatcher": [],
+      "dependsOn": ["npm: install"],
+      "label": "npm: start"
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "path": "src/Microsoft.eShopWeb.Web",
+      "problemMatcher": [],
+      "dependsOn": ["npm: install"],
+      "label": "npm: build"
     }
   ]
 }

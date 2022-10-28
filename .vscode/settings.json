@@ -11,7 +11,10 @@
     "**/.hg": true,
     "**/CVS": true,
     "**/.DS_Store": true,
-    "**/Thumbs.db": true
+    "**/Thumbs.db": true,
+    "**/node_modules": true,
+    "**/bin": true,
+    "**/obj": true
   },
 
   "FSharp.codeLenses.references.enabled": false,
@@ -25,10 +28,10 @@
   "FSharp.enableAdaptiveLspServer": true,
   "FSharp.enableAnalyzers": true,
 
+  "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
 
   "[fsharp]": {
-    "editor.formatOnSave": true,
     "editor.defaultFormatter": "Ionide.Ionide-fsharp"
   }
 }
