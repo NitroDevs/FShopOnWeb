@@ -3,10 +3,13 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ViewTemplate.fs" />
-    <Compile Include="Home.fs" />
-    <Compile Include="ViewTemplate.fs" />
     <Compile Include="Domain.fs" />
+    <Compile Include="ViewTemplate.fs" />
+    <Compile Include="Home\HomeData.fs" />
+    <Compile Include="Home\CatalogFilters.Template.fs" />
+    <Compile Include="Home\ProductsGrid.Template.fs" />
+    <Compile Include="Home\Home.Template.fs" />
+    <Compile Include="ViewTemplate.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,13 +2,13 @@ namespace Microsoft.eShopWeb.Web
 
 module Program =
 
-  open Domain
   open Falco
   open Falco.Routing
   open Falco.HostBuilder
   open Microsoft.AspNetCore.Builder
   open System
-  open Microsoft.eShopOnWeb.Web
+  open Microsoft.eShopWeb.Web.Domain
+  open Microsoft.eShopWeb.Web.Home
 
   let getById =
     fun (repository) -> fun (id: Guid) -> repository |> List.tryFind (fun x -> x.Id = id)
@@ -41,7 +41,7 @@ module Program =
       use_static_files
 
       endpoints
-        [ get "/" Home.homeHandler
+        [ get "/" HomePage.handler
 
           get "/catalogItems/{id:guid}" (Request.mapRoute getCatalogItemByIdFromRoute responseHandler) ]
     }
