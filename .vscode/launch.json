@@ -11,7 +11,7 @@
             "preLaunchTask": "Build: solution",
             "program": "${workspaceFolder}/src/Microsoft.eShopWeb.Web/bin/Debug/net6.0/Microsoft.eShopWeb.Web.dll",
             "args": [],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/src/Microsoft.eShopWeb.Web/",
             "console": "internalConsole",
             "stopAtEntry": false
         },
