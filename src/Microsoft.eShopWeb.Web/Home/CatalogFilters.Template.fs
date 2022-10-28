@@ -1,39 +1,42 @@
 namespace Microsoft.eShopWeb.Web.Home
 
-open Falco.Markup
+open Falco.Markup.Attr
+open Falco.Markup.Elem
+open Falco.Markup.Text
 open Microsoft.eShopWeb.Web.Home
-open Microsoft.eShopWeb.Web.ViewTemplate
+open Microsoft.eShopWeb.Web.ViewTemplate.Attr
 
 module CatalogFilters =
 
-  let allOption = Elem.option [] [ Text.raw "All" ]
+  let allOption = option [] [ raw "All" ]
+
+  let optionTmpl index v =
+    option [ value $"{index}" ] [ raw $"{v}" ]
 
   let brandSelect =
-    let brandOptions = [ allOption ] @ List.mapi (fun i x -> Elem.option [ Attr.value $"{i}" ] [ Text.raw $"{x}" ]) HomeData.brands
+    let brandOptions = [ allOption ] @ List.mapi optionTmpl HomeData.brands
 
-    Elem.select
-      [ Attr.class' "esh-catalog-filter"
-        Attr.id "CatalogModel_BrandFilterApplied"
-        Attr.name "CatalogModel.BrandFilterApplied" ] brandOptions
+    select
+      [ class' "esh-catalog-filter"
+        id "CatalogModel_BrandFilterApplied"
+        name "CatalogModel.BrandFilterApplied" ]
+      brandOptions
 
   let typesSelect =
-    let typeOptions = [ allOption ] @ List.mapi (fun i x -> Elem.option [ Attr.value $"{i}" ] [ Text.raw $"{x}" ]) HomeData.types
+    let typeOptions = [ allOption ] @ List.mapi optionTmpl HomeData.types
 
-    Elem.select
-      [ Attr.class' "esh-catalog-filter"
-        Attr.id "CatalogModel_TypesFilterApplied"
-        Attr.name "CatalogModel.TypesFilterApplied" ] typeOptions
+    select
+      [ class' "esh-catalog-filter"
+        id "CatalogModel_TypesFilterApplied"
+        name "CatalogModel.TypesFilterApplied" ]
+      typeOptions
 
-  let cmpt =
-    Elem.section
-      [ Attr.class' "esh-catalog-filters" ]
-      [ Elem.div
-          [ Attr.class' "container" ]
-          [ Elem.form
-              [ Attr.method "get" ]
-              [ Elem.label
-                  [ Attr.class' "esh-catalog-label"; Attr.data "title" "brand" ]
-                  [ brandSelect ]
-                Elem.label
-                  [ Attr.class' "esh-catalog-label"; Attr.data "title" "type" ]
-                  [ typesSelect ] ] ] ]
+  let catalogFilters =
+    section
+      [ class' "esh-catalog-filters" ]
+      [ div
+          [ class' "container" ]
+          [ form
+              [ method "get" ]
+              [ label [ class' "esh-catalog-label"; data "title" "brand" ] [ brandSelect ]
+                label [ class' "esh-catalog-label"; data "title" "type" ] [ typesSelect ] ] ] ]
