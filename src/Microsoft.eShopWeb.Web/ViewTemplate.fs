@@ -54,7 +54,7 @@ module ViewTemplate =
   let hero =
     section
       [ class' "esh-catalog-hero" ]
-      [ div [ class' "container" ] [ img [ class' "esh-catalog-title"; src "/images/main_banner_png" ] ] ]
+      [ div [ class' "container" ] [ img [ class' "esh-catalog-title"; src "/images/main_banner.png" ] ] ]
 
   let footer =
     footer
