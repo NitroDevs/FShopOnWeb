@@ -39,4 +39,5 @@ module CatalogFilters =
           [ form
               [ method "get" ]
               [ label [ class' "esh-catalog-label"; data "title" "brand" ] [ brandSelect ]
-                label [ class' "esh-catalog-label"; data "title" "type" ] [ typesSelect ] ] ] ]
+                label [ class' "esh-catalog-label"; data "title" "type" ] [ typesSelect ]
+                input [ src "/images/arrow-right.svg"; class' "esh-catalog-send"; type' "image" ] ] ] ]

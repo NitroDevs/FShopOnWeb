@@ -11,7 +11,7 @@ module HomePage =
   let metadata: HeadMetadata = { Title = "Home"; Description = "" }
 
   let head = head metadata
-  let body = body [ catalogFilters; div [ class' "container" ] productsGrid ]
+  let body = body [ catalogFilters; div [ class' "container" ] [ productsGrid ] ]
   let page = layout head body
 
   let handler: HttpHandler = Response.ofHtml page

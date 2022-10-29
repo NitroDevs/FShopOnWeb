@@ -1,6 +1,7 @@
 const IN_PRODUCTION = process.env.NODE_ENV === 'production';
 
 module.exports = {
+  syntax: require('postcss-scss'),
   plugins: [
     require('@csstools/postcss-sass')(/* node-sass options */),
     require('autoprefixer'),

@@ -12,7 +12,7 @@ module ViewTemplate =
 
   type HeadMetadata = { Title: string; Description: string }
 
-  let styles = [ link [ href "/css/site.min.css"; rel "stylesheet" ] ]
+  let styles = [ link [ href "/css/site.css"; rel "stylesheet" ] ]
 
   let meta metadata =
     [ Elem.title [] [ raw $"FShopOnWeb - {metadata.Title}" ] ]
@@ -74,7 +74,7 @@ module ViewTemplate =
   let bodyTemplate (elems) : XmlBodyNode =
     let slotContents = [ navBar; hero ] @ elems @ [ footer ]
     let wrapper = div [ class' "esh-app-wrapper" ] slotContents
-    body [] [ wrapper ]
+    body [ class' "m-0" ] [ wrapper ]
 
   let body elems = bodyTemplate elems
 

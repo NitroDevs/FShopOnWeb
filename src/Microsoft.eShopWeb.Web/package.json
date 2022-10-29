@@ -24,6 +24,7 @@
     "env-cmd": "10.1.0",
     "postcss": "8.4.18",
     "postcss-cli": "10.0.0",
+    "postcss-scss": "4.0.5",
     "purgecss": "5.0.0",
     "sass": "1.55.0"
   }

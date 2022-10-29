@@ -32,4 +32,5 @@ module ProductsGrid =
             // TODO - figure out how to generate an XSRF token (@Html.AntiForgeryToken() in Razor)
             ] ]
 
-  let productsGrid = List.mapi itemTmpl catalogItems
+  let productsGrid =
+    div [ class' "esh-catalog-items row" ] (List.mapi itemTmpl catalogItems)
