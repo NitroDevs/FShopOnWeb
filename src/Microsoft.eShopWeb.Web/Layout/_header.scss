@@ -4,6 +4,9 @@
   background-color: #00a69c;
   height: 4rem;
 }
+.esh-app-header {
+  margin: 15px;
+}
 .esh-header-back {
   color: rgba(255, 255, 255, 0.5);
   line-height: 4rem;
@@ -14,4 +17,10 @@
 .esh-header-back:hover {
   color: #ffffff;
   transition: color 0.35s;
+}
+
+.esh-app-wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
