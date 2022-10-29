@@ -4,6 +4,7 @@
 }
 
 .esh-catalog-filter {
+  appearance: none;
   background-color: transparent;
   border-color: #00d9cc;
   color: #ffffff;
@@ -37,7 +38,7 @@
   z-index: 1;
 }
 .esh-catalog-label::after {
-  background-image: url('../../images/arrow-down.png');
+  background-image: url('/images/arrow-down.png');
   content: '';
   height: 7px;
   position: absolute;
