@@ -4,7 +4,7 @@ open Falco.Markup
 open Falco.Markup.Elem
 open Falco.Markup.Attr
 open Falco.Markup.Text
-open Microsoft.eShopWeb.Web.Basket.Domain
+open Microsoft.eShopWeb.Web.Basket.BasketDomain
 
 module BasketComponent =
 

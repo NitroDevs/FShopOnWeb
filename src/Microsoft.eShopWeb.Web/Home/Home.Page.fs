@@ -13,7 +13,9 @@ module HomePage =
     let head = PublicLayout.head metadata
 
     let body =
-      PublicLayout.body [ CatalogFilters.cmpt; div [ class' "container" ] [ CatalogGrid.cmpt ] ]
+      PublicLayout.body
+        [ CatalogFiltersComponent.cmpt
+          div [ class' "container" ] [ CatalogGridComponent.cmpt ] ]
 
     let page = PublicLayout.layout head body
 

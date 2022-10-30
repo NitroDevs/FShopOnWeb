@@ -6,7 +6,7 @@ open Falco.Markup.Elem
 open Falco.Markup.Text
 open Microsoft.eShopWeb.Web.Home
 
-module CatalogFilters =
+module CatalogFiltersComponent =
   module private Template =
     let allOption = option [] [ raw "All" ]
 
@@ -14,7 +14,7 @@ module CatalogFilters =
       option [ value $"{index}" ] [ raw $"{v}" ]
 
     let brandSelect =
-      let brandOptions = [ allOption ] @ List.mapi optionTmpl Domain.brands
+      let brandOptions = [ allOption ] @ List.mapi optionTmpl HomeDomain.brands
 
       select
         [ class' "esh-catalog-filter"
@@ -23,7 +23,7 @@ module CatalogFilters =
         brandOptions
 
     let typesSelect =
-      let typeOptions = [ allOption ] @ List.mapi optionTmpl Domain.types
+      let typeOptions = [ allOption ] @ List.mapi optionTmpl HomeDomain.types
 
       select
         [ class' "esh-catalog-filter"

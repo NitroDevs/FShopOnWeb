@@ -5,7 +5,7 @@ open Falco.Markup.Elem
 open Falco.Markup.Text
 open Microsoft.eShopWeb.Web.Domain
 
-module CatalogGrid =
+module CatalogGridComponent =
   module private Template =
     let itemTmpl index item =
       div

@@ -3,7 +3,7 @@ namespace Microsoft.eShopWeb.Web.Basket
 open System
 open Microsoft.eShopWeb.Web.Domain
 
-module Domain =
+module BasketDomain =
 
   type BasketItem =
     { Id: int
