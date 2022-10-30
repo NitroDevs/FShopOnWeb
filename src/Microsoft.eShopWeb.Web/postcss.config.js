@@ -8,7 +8,7 @@ module.exports = {
 
     IN_PRODUCTION &&
       require('@fullhuman/postcss-purgecss')({
-        content: ['./**/*.Template.fs'],
+        content: ['./**/*.Template.fs', './**/*.Component.fs'],
         defaultExtractor(content) {
           const contentWithoutStyleBlocks = content.replace(
             /<style[^]+?<\/style>/gi,
