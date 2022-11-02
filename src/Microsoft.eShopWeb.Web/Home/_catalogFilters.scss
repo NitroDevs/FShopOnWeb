@@ -1,0 +1,62 @@
+.esh-catalog-filters {
+  background-color: #00a69c;
+  height: 65px;
+}
+
+.esh-catalog-filter {
+  appearance: none;
+  background-color: transparent;
+  border-color: #00d9cc;
+  color: #ffffff;
+  cursor: pointer;
+  margin-right: 1rem;
+  margin-top: 0.5rem;
+  min-width: 140px;
+  outline-color: #83d01b;
+  padding-bottom: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 1.5rem;
+}
+.esh-catalog-filter option {
+  background-color: #00a69c;
+}
+
+.esh-catalog-label {
+  display: inline-block;
+  position: relative;
+  z-index: 0;
+}
+.esh-catalog-label::before {
+  color: rgba(255, 255, 255, 0.5);
+  content: attr(data-title);
+  font-size: 0.65rem;
+  margin-left: 0.5rem;
+  margin-top: 0.65rem;
+  position: absolute;
+  text-transform: uppercase;
+  z-index: 1;
+}
+.esh-catalog-label::after {
+  background-image: url('/images/arrow-down.png');
+  content: '';
+  height: 7px;
+  position: absolute;
+  right: 1.5rem;
+  top: 2.5rem;
+  width: 10px;
+  z-index: 1;
+}
+
+.esh-catalog-send {
+  background-color: #83d01b;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: -1.5rem;
+  transition: all 0.35s;
+}
+.esh-catalog-send:hover {
+  background-color: #4a760f;
+  transition: all 0.35s;
+}

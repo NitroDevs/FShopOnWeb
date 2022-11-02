@@ -4,18 +4,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Domain.fs" />
-    <Compile Include="ViewTemplate.fs" />
-    <Compile Include="Home\HomeData.fs" />
-    <Compile Include="Home\CatalogFilters.Template.fs" />
-    <Compile Include="Home\ProductsGrid.Template.fs" />
-    <Compile Include="Home\Home.Template.fs" />
-    <Compile Include="ViewTemplate.fs" />
+    <Compile Include="Layout\Public.Layout.fs" />
+    <Compile Include="Home\Home.Domain.fs" />
+    <Compile Include="Home\CatalogFilters.Component.fs" />
+    <Compile Include="Home\CatalogGrid.Component.fs" />
+    <Compile Include="Home\Home.Page.fs" />
+    <Compile Include="Basket\Basket.Domain.fs" />
+    <Compile Include="Basket\Basket.Component.fs" />
+    <Compile Include="Basket\Basket.Page.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
     <Watch Include="**\*.fs" Exclude="node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Falco" Version="3.1.*" />
+    <PackageReference Include="Falco" Version="3.1.14" />
   </ItemGroup>
 </Project>

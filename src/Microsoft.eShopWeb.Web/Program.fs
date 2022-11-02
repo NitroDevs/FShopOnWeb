@@ -1,14 +1,15 @@
 namespace Microsoft.eShopWeb.Web
 
-module Program =
+open Falco
+open Falco.Routing
+open Falco.HostBuilder
+open Microsoft.AspNetCore.Builder
+open System
+open Microsoft.eShopWeb.Web.Domain
+open Microsoft.eShopWeb.Web.Home
+open Microsoft.eShopWeb.Web.Basket
 
-  open Falco
-  open Falco.Routing
-  open Falco.HostBuilder
-  open Microsoft.AspNetCore.Builder
-  open System
-  open Microsoft.eShopWeb.Web.Domain
-  open Microsoft.eShopWeb.Web.Home
+module Program =
 
   let getById =
     fun (repository) -> fun (id: Guid) -> repository |> List.tryFind (fun x -> x.Id = id)
@@ -42,6 +43,8 @@ module Program =
 
       endpoints
         [ get "/" HomePage.handler
+
+          get "/basket" BasketPage.handler
 
           get "/catalogItems/{id:guid}" (Request.mapRoute getCatalogItemByIdFromRoute responseHandler) ]
     }
