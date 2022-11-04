@@ -15,7 +15,11 @@ module HomePage =
     let body =
       PublicLayout.body
         [ CatalogFiltersComponent.cmpt
-          div [ class' "container" ] [ CatalogGridComponent.cmpt ] ]
+          div
+            [ class' "container" ]
+            [ CatalogPagerComponent.cmpt
+              CatalogGridComponent.cmpt
+              CatalogPagerComponent.cmpt ] ]
 
     let page = PublicLayout.layout head body
 

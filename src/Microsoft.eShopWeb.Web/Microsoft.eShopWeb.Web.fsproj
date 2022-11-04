@@ -8,6 +8,7 @@
     <Compile Include="Home\Home.Domain.fs" />
     <Compile Include="Home\CatalogFilters.Component.fs" />
     <Compile Include="Home\CatalogGrid.Component.fs" />
+    <Compile Include="Home\CatalogPager.Component.fs" />
     <Compile Include="Home\Home.Page.fs" />
     <Compile Include="Basket\Basket.Domain.fs" />
     <Compile Include="Basket\Basket.Component.fs" />
