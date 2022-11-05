@@ -14,7 +14,8 @@
     "**/Thumbs.db": true,
     "**/node_modules": true,
     "**/bin": true,
-    "**/obj": true
+    "**/obj": true,
+    "**/packages.lock.json": true
   },
 
   "FSharp.codeLenses.references.enabled": false,

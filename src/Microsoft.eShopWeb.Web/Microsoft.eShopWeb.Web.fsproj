@@ -19,6 +19,7 @@
     <Watch Include="**\*.fs" Exclude="node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="EntityFrameworkCore.FSharp" Version="6.0.7" />
     <PackageReference Include="Falco" Version="3.1.14" />
   </ItemGroup>
 </Project>
