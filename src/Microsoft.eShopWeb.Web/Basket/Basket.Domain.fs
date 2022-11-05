@@ -40,3 +40,31 @@ module BasketDomain =
     { Id = 1
       Items = List.mapi mapCatalogItem catalogItems
       BuyerId = None }
+
+  let addItemToBasket (catalogItem: CatalogItem) =
+    // let id = form.TryGetString "id" |> Option.map int
+    let item: BasketItem option =
+      basket.Items |> List.tryFind (fun i -> i.CatalogItemId = catalogItem.Id)
+
+    match item with
+    | None ->
+      let items =
+        basket.Items
+        |> List.append [ (mapCatalogItem (basket.Items.Length + 1) catalogItem) ]
+
+      { basket with Items = items }
+    | Some item ->
+      let quantity = item.Quantity + 1
+
+      let items =
+        basket.Items
+        |> List.map (fun i ->
+          if i.CatalogItemId = catalogItem.Id then
+            { i with Quantity = quantity }
+          else
+            i)
+
+      { basket with Items = items }
+
+// TODO:
+// let getCatalogItemById =
