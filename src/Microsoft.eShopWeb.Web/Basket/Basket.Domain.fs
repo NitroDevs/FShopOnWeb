@@ -36,7 +36,7 @@ module BasketDomain =
 
   let productFallbackImageUri = "/images/brand.png"
 
-  let basket =
+  let basketFromCatalog catalogItems =
     { Id = 1
       Items = List.mapi mapCatalogItem catalogItems
       BuyerId = None }
