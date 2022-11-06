@@ -13,7 +13,7 @@ module CatalogGridComponent =
       div
         [ class' "esh-catalog-item col-md-4" ]
         [ form
-            [ method "post"; action "/Basket" ]
+            [ method "post"; action "/basket" ]
             [ img [ src item.PictureUri; class' "esh-catalog-thumbnail" ]
               input [ class' "esh-catalog-button"; type' "submit"; value "[ ADD TO BASKET ]" ]
               div [ class' "esh-catalog-name" ] [ span [] [ raw item.Name ] ]

@@ -66,7 +66,7 @@ module Program =
       endpoints
         [ get "/" HomePage.handler
 
-          get "/basket" BasketPage.handler
+          post "/basket" BasketPage.handler
 
           //get "/catalogItems/{id:guid}" (Request.mapRoute getCatalogItemByIdFromRoute responseHandler)
           ]

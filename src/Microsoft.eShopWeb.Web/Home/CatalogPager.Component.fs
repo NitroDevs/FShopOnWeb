@@ -8,11 +8,20 @@ module CatalogPagerComponent =
   type Props = { CurrentPage: int; ItemsCount: int }
 
   module private Template =
+    type State =
+      { PagingText: string
+        PreviousClass: string
+        NextClass: string }
 
-    let pagingText props =
+    let calculateState props =
       let currentPage = 1
       let pageSize = 10
-      let totalPages = (props.ItemsCount / pageSize) + 1
+
+      let totalPages =
+        match (props.ItemsCount / pageSize) with
+        | 0 -> 1
+        | _ -> (props.ItemsCount / pageSize)
+
       let morePagesAvailable = props.ItemsCount > pageSize
       let hasPreviousPage = currentPage > 1
       let hasNextPage = currentPage < totalPages
@@ -23,9 +32,27 @@ module CatalogPagerComponent =
         | false -> props.ItemsCount
 
       let currentItemIndex = (pageSize * (currentPage - 1)) + 1
-      sprintf "Showing %d of %d products - Page %d - %d" currentItemIndex totalItemsOnPage currentPage totalPages
+
+      let previousClass =
+        match hasPreviousPage with
+        | true -> "esh-pager-item-left esh-pager-item--navigable esh-pager-item"
+        | false -> "esh-pager-item-left esh-pager-item--navigable esh-pager-item is-disabled"
+
+      let nextClass =
+        match hasNextPage with
+        | true -> "esh-pager-item-right esh-pager-item--navigable esh-pager-item"
+        | false -> "esh-pager-item-right esh-pager-item--navigable esh-pager-item is-disabled"
+
+      let pagingText =
+        sprintf "Showing %d of %d products - Page %d - %d" currentItemIndex totalItemsOnPage currentPage totalPages
+
+      { PagingText = pagingText
+        NextClass = nextClass
+        PreviousClass = previousClass }
 
   let cmpt props =
+    let state = Template.calculateState props
+
     div
       [ class' "esh-pager" ]
       [ div
@@ -36,17 +63,8 @@ module CatalogPagerComponent =
                   []
                   [ div
                       [ class' "col-md-2 col-xs-12" ]
-                      [ a
-                          [ class' "esh-pager-item-left esh-pager-item--navigable esh-pager-item is-disabled"
-                            href "/?pageId=-1" ]
-                          [ raw "Previous" ] ]
-                    div
-                      [ class' "col-md-8 col-xs-12" ]
-                      [ span [ class' "esh-pager-item" ] [ raw (Template.pagingText props) ] ]
+                      [ a [ class' state.PreviousClass; href "/?pageId=-1" ] [ raw "Previous" ] ]
+                    div [ class' "col-md-8 col-xs-12" ] [ span [ class' "esh-pager-item" ] [ raw state.PagingText ] ]
                     div
                       [ class' "col-md-2 col-xs-12" ]
-                      [ a
-                          [ class' "esh-pager-item-right esh-pager-item--navigable esh-pager-item is-disabled"
-                            id "Next"
-                            href "/?pageId=1" ]
-                          [ raw "Next" ] ] ] ] ] ]
+                      [ a [ class' state.NextClass; id "Next"; href "/?pageId=1" ] [ raw "Next" ] ] ] ] ] ]
