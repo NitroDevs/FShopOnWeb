@@ -9,8 +9,12 @@ open Microsoft.eShopWeb.Web.Home
 open Microsoft.eShopWeb.Web.Persistence
 open System.Linq
 open Microsoft.EntityFrameworkCore
+open EntityFrameworkCore.FSharp.DbContextHelpers
+open Microsoft.AspNetCore.Http
+open System.Threading.Tasks
 
 module HomePage =
+
   type Props =
     { FiltersProps: CatalogFiltersComponent.Props
       GridProps: CatalogGridComponent.Props
@@ -32,24 +36,24 @@ module HomePage =
 
     let page props = PublicLayout.layout head (body props)
 
-  let handler: HttpHandler =
-    Services.inject<ShopContext> (fun context ->
-      let dbItems =
-        context
-          .CatalogItems
-          .Include(fun i -> i.CatalogBrand)
-          .Include(fun i -> i.CatalogType)
-          .ToList()
+    let buildPage (db: ShopContext) (httpContext: HttpContext) =
+      (task {
+        let! dbItems =
+          toListTaskAsync (db.CatalogItems.Include(fun i -> i.CatalogBrand).Include(fun i -> i.CatalogType))
 
-      let items = List.ofSeq (dbItems)
-      let brands = List.map (fun i -> i.CatalogBrand.Name) items |> List.distinct
-      let types = List.map (fun i -> i.CatalogType.Name) items |> List.distinct
+        let items = List.ofSeq (dbItems)
+        let brands = List.map (fun i -> i.CatalogBrand.Name) items |> List.distinct
+        let types = List.map (fun i -> i.CatalogType.Name) items |> List.distinct
 
-      let props =
-        { FiltersProps = { Types = types; Brands = brands }
-          GridProps = { CatalogItems = items }
-          PagerProps =
-            { ItemsCount = items.Length
-              CurrentPage = 1 } }
+        let props =
+          { FiltersProps = { Types = types; Brands = brands }
+            GridProps = { CatalogItems = items }
+            PagerProps =
+              { ItemsCount = items.Length
+                CurrentPage = 1 } }
 
-      Response.ofHtml (Template.page props))
+        return! Response.ofHtml (page props) httpContext
+      })
+      :> Task
+
+  let handler: HttpHandler = Services.inject<ShopContext> Template.buildPage
