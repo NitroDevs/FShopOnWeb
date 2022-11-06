@@ -7,11 +7,9 @@ open Falco.Markup.Elem
 open Microsoft.eShopWeb.Web
 open Microsoft.eShopWeb.Web.Home
 open Microsoft.eShopWeb.Web.Persistence
-open System.Linq
 open Microsoft.EntityFrameworkCore
 open EntityFrameworkCore.FSharp.DbContextHelpers
 open Microsoft.AspNetCore.Http
-open System.Threading.Tasks
 
 module HomePage =
 
@@ -34,10 +32,11 @@ module HomePage =
               CatalogGridComponent.cmpt props.GridProps
               CatalogPagerComponent.cmpt props.PagerProps ] ]
 
-    let page props = PublicLayout.layout head (body props)
-
-    let buildPage (db: ShopContext) (httpContext: HttpContext) =
-      (task {
+    /// <summary>
+    /// Generates the <see cref="XmlNode" /> rendering for the Home page
+    /// </summary>
+    let page (db: ShopContext) =
+      task {
         let! dbItems =
           toListTaskAsync (db.CatalogItems.Include(fun i -> i.CatalogBrand).Include(fun i -> i.CatalogType))
 
@@ -52,8 +51,8 @@ module HomePage =
               { ItemsCount = items.Length
                 CurrentPage = 1 } }
 
-        return! Response.ofHtml (page props) httpContext
-      })
-      :> Task
+        return PublicLayout.layout head (body props)
+      }
 
-  let handler: HttpHandler = Services.inject<ShopContext> Template.buildPage
+  let handler: HttpHandler =
+    Services.inject<ShopContext> (fun db -> db |> Template.page |> Response.ofHtmlTask)

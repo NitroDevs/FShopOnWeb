@@ -5,6 +5,7 @@
   <ItemGroup>
     <Compile Include="Domain.fs" />
     <Compile Include="Persistence.fs" />
+    <Compile Include="Response.fs" />
     <Compile Include="Layout\Public.Layout.fs" />
     <Compile Include="Home\CatalogFilters.Component.fs" />
     <Compile Include="Home\CatalogGrid.Component.fs" />
