@@ -8,6 +8,7 @@ open Microsoft.eShopWeb.Web
 open System.Linq
 
 module BasketPage =
+
   module private Template =
 
     let metadata: PublicLayout.HeadMetadata = { Title = "Basket"; Description = "" }
@@ -19,11 +20,28 @@ module BasketPage =
 
     let page basket = PublicLayout.layout head (body basket)
 
+  let private getIdFromForm (form: FormCollectionReader) =
+    form.TryGetString "id" |> Option.map int
+
   let handler: HttpHandler =
     Services.inject<ShopContext> (fun context ->
-      let dbItems = context.CatalogItems.ToList()
+      Request.mapForm
+        (fun form ->
+          let dbItems = context.CatalogItems.ToList()
 
-      let items = List.ofSeq (dbItems)
-      let basket = BasketDomain.basketFromCatalog items
+          let items = List.ofSeq (dbItems)
+          let basket = BasketDomain.basketFromCatalog List.empty
 
-      Response.ofHtml (Template.page basket))
+          let id = getIdFromForm form
+
+          let basketToRender =
+            match id with
+            | None -> basket
+            | Some id ->
+              let catalogItem = items[id]
+
+              let updatedBasket = BasketDomain.addItemToBasket basket catalogItem
+              updatedBasket
+
+          Template.page basketToRender)
+        Response.ofHtml)

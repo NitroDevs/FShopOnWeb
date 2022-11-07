@@ -65,6 +65,3 @@ module BasketDomain =
             i)
 
       { basket with Items = items }
-
-// TODO:
-// let getCatalogItemById =
