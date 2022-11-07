@@ -6,6 +6,7 @@ open Falco.Markup.Elem
 open Microsoft.eShopWeb.Web
 
 module BasketPage =
+
   module private Template =
 
     let metadata: PublicLayout.HeadMetadata = { Title = "Basket"; Description = "" }
@@ -16,5 +17,8 @@ module BasketPage =
       PublicLayout.body [ div [ class' "container" ] (BasketComponent.cmpt BasketDomain.basket) ]
 
     let page = PublicLayout.layout head body
+
+    let getIdFromForm (form: FormCollectionReader) =
+      form.TryGetString "id" |> Option.map int
 
   let handler: HttpHandler = Response.ofHtml Template.page

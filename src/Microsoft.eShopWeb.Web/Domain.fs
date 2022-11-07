@@ -57,3 +57,6 @@ module Domain =
       CatalogType = catalogType }
 
   let catalogItems = [ catalogItem1; catalogItem2; catalogItem3 ]
+
+  let getCatalogItemById id =
+    catalogItems |> List.tryFind (fun i -> i.Id = id)
