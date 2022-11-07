@@ -6,6 +6,8 @@ open Falco.Markup.Text
 open Microsoft.eShopWeb.Web.Domain
 
 module CatalogGridComponent =
+  type Props = { CatalogItems: CatalogItem list }
+
   module private Template =
     let itemTmpl index item =
       div
@@ -21,5 +23,5 @@ module CatalogGridComponent =
               // TODO - figure out how to generate an XSRF token (@Html.AntiForgeryToken() in Razor)
               ] ]
 
-  let cmpt =
-    div [ class' "esh-catalog-items row" ] (List.mapi Template.itemTmpl catalogItems)
+  let cmpt props =
+    div [ class' "esh-catalog-items row" ] (List.mapi Template.itemTmpl props.CatalogItems)

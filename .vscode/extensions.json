@@ -6,7 +6,8 @@
   "recommendations": [
     "Ionide.Ionide-fsharp",
     "esbenp.prettier-vscode",
-    "EditorConfig.EditorConfig"
+    "EditorConfig.EditorConfig",
+    "alexcvzz.vscode-sqlite"
   ],
   // List of extensions recommended by VS Code that should not be recommended for users of this workspace.
   "unwantedRecommendations": []

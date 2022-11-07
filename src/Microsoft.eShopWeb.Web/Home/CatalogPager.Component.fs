@@ -3,43 +3,56 @@ namespace Microsoft.eShopWeb.Web.Home
 open Falco.Markup.Attr
 open Falco.Markup.Elem
 open Falco.Markup.Text
-open Microsoft.eShopWeb.Web.Domain
 
 module CatalogPagerComponent =
+  type Props = { CurrentPage: int; ItemsCount: int }
+
   module private Template =
-    let currentPage = 1
-    let pageSize = 10
+    type State =
+      { PagingText: string
+        PreviousClass: string
+        NextClass: string }
 
-    let totalPages =
-      match (catalogItems.Length / pageSize) with
-      | 0 -> 1
-      | _ -> (catalogItems.Length / pageSize)
+    let calculateState props =
+      let currentPage = 1
+      let pageSize = 10
 
-    let morePagesAvailable = catalogItems.Length > pageSize
-    let hasPreviousPage = currentPage > 1
-    let hasNextPage = currentPage < totalPages
+      let totalPages =
+        match (props.ItemsCount / pageSize) with
+        | 0 -> 1
+        | _ -> (props.ItemsCount / pageSize)
 
-    let totalItemsOnPage =
-      match morePagesAvailable with
-      | true -> pageSize
-      | false -> catalogItems.Length
+      let morePagesAvailable = props.ItemsCount > pageSize
+      let hasPreviousPage = currentPage > 1
+      let hasNextPage = currentPage < totalPages
 
-    let currentItemIndex = (pageSize * (currentPage - 1)) + 1
+      let totalItemsOnPage =
+        match morePagesAvailable with
+        | true -> pageSize
+        | false -> props.ItemsCount
 
-    let pagingText =
-      sprintf "Showing %d of %d products - Page %d - %d" currentItemIndex totalItemsOnPage currentPage totalPages
+      let currentItemIndex = (pageSize * (currentPage - 1)) + 1
 
-    let previousClass =
-      match hasPreviousPage with
-      | true -> "esh-pager-item-left esh-pager-item--navigable esh-pager-item"
-      | false -> "esh-pager-item-left esh-pager-item--navigable esh-pager-item is-disabled"
+      let previousClass =
+        match hasPreviousPage with
+        | true -> "esh-pager-item-left esh-pager-item--navigable esh-pager-item"
+        | false -> "esh-pager-item-left esh-pager-item--navigable esh-pager-item is-disabled"
 
-    let nextClass =
-      match hasNextPage with
-      | true -> "esh-pager-item-right esh-pager-item--navigable esh-pager-item"
-      | false -> "esh-pager-item-right esh-pager-item--navigable esh-pager-item is-disabled"
+      let nextClass =
+        match hasNextPage with
+        | true -> "esh-pager-item-right esh-pager-item--navigable esh-pager-item"
+        | false -> "esh-pager-item-right esh-pager-item--navigable esh-pager-item is-disabled"
 
-  let cmpt =
+      let pagingText =
+        sprintf "Showing %d of %d products - Page %d - %d" currentItemIndex totalItemsOnPage currentPage totalPages
+
+      { PagingText = pagingText
+        NextClass = nextClass
+        PreviousClass = previousClass }
+
+  let cmpt props =
+    let state = Template.calculateState props
+
     div
       [ class' "esh-pager" ]
       [ div
@@ -50,8 +63,8 @@ module CatalogPagerComponent =
                   []
                   [ div
                       [ class' "col-md-2 col-xs-12" ]
-                      [ a [ class' Template.previousClass; href "/?pageId=-1" ] [ raw "Previous" ] ]
-                    div [ class' "col-md-8 col-xs-12" ] [ span [ class' "esh-pager-item" ] [ raw Template.pagingText ] ]
+                      [ a [ class' state.PreviousClass; href "/?pageId=-1" ] [ raw "Previous" ] ]
+                    div [ class' "col-md-8 col-xs-12" ] [ span [ class' "esh-pager-item" ] [ raw state.PagingText ] ]
                     div
                       [ class' "col-md-2 col-xs-12" ]
-                      [ a [ class' Template.nextClass; id "Next"; href "/?pageId=1" ] [ raw "Next" ] ] ] ] ] ]
+                      [ a [ class' state.NextClass; id "Next"; href "/?pageId=1" ] [ raw "Next" ] ] ] ] ] ]

@@ -4,8 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Domain.fs" />
+    <Compile Include="Persistence.fs" />
+    <Compile Include="Response.fs" />
     <Compile Include="Layout\Public.Layout.fs" />
-    <Compile Include="Home\Home.Domain.fs" />
     <Compile Include="Home\CatalogFilters.Component.fs" />
     <Compile Include="Home\CatalogGrid.Component.fs" />
     <Compile Include="Home\CatalogPager.Component.fs" />
@@ -20,6 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EntityFrameworkCore.FSharp" Version="6.0.7" />
-    <PackageReference Include="Falco" Version="3.1.14" />
+    <PackageReference Include="Falco" Version="4.0.0-rc1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10" />
   </ItemGroup>
 </Project>

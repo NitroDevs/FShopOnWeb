@@ -36,12 +36,12 @@ module BasketDomain =
 
   let productFallbackImageUri = "/images/brand.png"
 
-  let basket =
+  let basketFromCatalog catalogItems =
     { Id = 1
       Items = List.mapi mapCatalogItem catalogItems
       BuyerId = None }
 
-  let addItemToBasket (catalogItem: CatalogItem) =
+  let addItemToBasket basket (catalogItem: CatalogItem) =
     // let id = form.TryGetString "id" |> Option.map int
     let item: BasketItem option =
       basket.Items |> List.tryFind (fun i -> i.CatalogItemId = catalogItem.Id)
