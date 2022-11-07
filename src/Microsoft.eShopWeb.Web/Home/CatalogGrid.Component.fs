@@ -9,7 +9,7 @@ module CatalogGridComponent =
   type Props = { CatalogItems: CatalogItem list }
 
   module private Template =
-    let itemTmpl index item =
+    let itemTmpl item =
       div
         [ class' "esh-catalog-item col-md-4" ]
         [ form
@@ -18,10 +18,11 @@ module CatalogGridComponent =
               input [ class' "esh-catalog-button"; type' "submit"; value "[ ADD TO BASKET ]" ]
               div [ class' "esh-catalog-name" ] [ span [] [ raw item.Name ] ]
               div [ class' "esh-catelog-price" ] [ span [] [ raw (item.Price.ToString "C") ] ]
-              input [ type' "hidden"; name "id"; id "catalogItem_Id"; value (sprintf "%d" index) ]
+              input [ type' "hidden"; name "id"; id "catalogItem_Id"; value $"{item.Id}" ]
 
-              // TODO - figure out how to generate an XSRF token (@Html.AntiForgeryToken() in Razor)
+              // TODO - add XSRF protection
+              // https://www.falcoframework.com/docs/security.html#cross-site-scripting-xss-attacks
               ] ]
 
   let cmpt props =
-    div [ class' "esh-catalog-items row" ] (List.mapi Template.itemTmpl props.CatalogItems)
+    div [ class' "esh-catalog-items row" ] (List.map Template.itemTmpl props.CatalogItems)
