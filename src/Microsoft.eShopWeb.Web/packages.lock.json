@@ -14,9 +14,9 @@
       },
       "Falco": {
         "type": "Direct",
-        "requested": "[4.0.0-rc1, )",
-        "resolved": "4.0.0-rc1",
-        "contentHash": "pVDq+/PdmMIG5aqNyeAOdO8z2YUvYvgX+CnZju3PvNXQ/VP8fQKgysQVr0RD44O/2Ql3Kc840KwdL8rJ++Q6Ng==",
+        "requested": "[4.0.0, )",
+        "resolved": "4.0.0",
+        "contentHash": "78pBp/FIuv/9DhiZ9/nTxj8zFvd9tpa9vv2IK2fQqlilGvel5h2rXEP+Foz6mvCt8f6R/KHpezBQOjtmb1B5SA==",
         "dependencies": {
           "FSharp.Core": "6.0.6",
           "Falco.Markup": "1.0.1"
