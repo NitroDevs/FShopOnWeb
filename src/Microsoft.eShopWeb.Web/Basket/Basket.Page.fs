@@ -8,6 +8,7 @@ open Microsoft.eShopWeb.Web
 open System.Linq
 
 module BasketPage =
+  open System
 
   module private Template =
 
@@ -21,7 +22,7 @@ module BasketPage =
     let page basket = PublicLayout.layout head (body basket)
 
   let private getIdFromForm (form: FormCollectionReader) =
-    form.TryGetString "id" |> Option.map int
+    form.TryGetString "id" |> Option.map Guid
 
   let handler: HttpHandler =
     Services.inject<ShopContext> (fun context ->
@@ -38,10 +39,11 @@ module BasketPage =
             match id with
             | None -> basket
             | Some id ->
-              let catalogItem = items[id]
+              let catalogItem = List.tryFind (fun (x: Domain.CatalogItem) -> x.Id = id) items
 
-              let updatedBasket = BasketDomain.addItemToBasket basket catalogItem
-              updatedBasket
+              match catalogItem with
+              | None -> basket // todo: error page?
+              | Some catalogItem -> BasketDomain.addItemToBasket basket catalogItem
 
           Template.page basketToRender)
         Response.ofHtml)
