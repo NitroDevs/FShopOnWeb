@@ -11,6 +11,7 @@ open System.Linq
 open Microsoft.EntityFrameworkCore
 
 module BasketPage =
+  open System
 
   module private Template =
 
@@ -22,7 +23,6 @@ module BasketPage =
       PublicLayout.body [ div [ Markup.Attr.class' "container" ] (BasketComponent.cmpt basket) ] basket
 
     let page basket = PublicLayout.layout head (body basket)
-
 
   let get: HttpHandler =
     Services.inject<ShopContext> (fun db ->
