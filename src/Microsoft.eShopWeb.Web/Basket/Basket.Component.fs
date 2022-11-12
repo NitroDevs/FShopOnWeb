@@ -5,11 +5,14 @@ open Falco.Markup.Elem
 open Falco.Markup.Attr
 open Falco.Markup.Text
 open Microsoft.eShopWeb.Web.Basket.BasketDomain
+open Domain
+open System
 
 module BasketComponent =
 
   module private Template =
-    let itemTmpl index item =
+
+    let itemTmpl index (item: BasketItem) =
       article
         [ class' "esh-basket-items" ]
         [ div
@@ -19,14 +22,16 @@ module BasketComponent =
                 [ img
                     [ src (
                         match item.PictureUri with
-                        | Some uri -> uri
-                        | None -> productFallbackImageUri
+                        | emptyUri when String.IsNullOrWhiteSpace(emptyUri) -> productFallbackImageUri
+                        | uri -> uri
                       )
                       class' "esh-basket-image" ] ]
               section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw item.ProductName ]
-              section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw (item.UnitPrice.ToString "C") ] ] ]
+              section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw (item.UnitPrice.ToString "C") ]
+              section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw (item.Quantity.ToString()) ]
+              section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw ((decimal(item.Quantity) * item.UnitPrice).ToString "C" ) ] ] ]
 
-    let itemsTmpl basket =
+    let itemsTmpl items =
       [ Elem.form
           [ method "post" ]
           [ article
@@ -36,7 +41,7 @@ module BasketComponent =
                 section [ class' "esh-basket-title col" ] [ raw "Price" ]
                 section [ class' "esh-basket-title col" ] [ raw "Quantity" ]
                 section [ class' "esh-basket-title col" ] [ raw "Cost" ] ]
-            div [ class' "esh-catalog-items" ] (List.mapi itemTmpl basket) ] ]
+            div [ class' "esh-catalog-items" ] (Seq.mapi itemTmpl items |> List.ofSeq) ] ]
 
     let noItemsTmpl =
       [ h3 [ class' "esh-catalog-items row" ] [ raw "Basket is empty." ]
@@ -49,5 +54,5 @@ module BasketComponent =
     let items = basket.Items
 
     match items with
-    | [] -> Template.noItemsTmpl
+    | s when Seq.isEmpty s -> Template.noItemsTmpl
     | _ -> Template.itemsTmpl items

@@ -9,7 +9,7 @@ module CatalogGridComponent =
   type Props = { CatalogItems: CatalogItem list }
 
   module private Template =
-    let itemTmpl item =
+    let itemTmpl (item: CatalogItem) =
       div
         [ class' "esh-catalog-item col-md-4" ]
         [ form

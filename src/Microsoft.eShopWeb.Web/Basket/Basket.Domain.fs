@@ -1,67 +1,99 @@
 namespace Microsoft.eShopWeb.Web.Basket
 
 open System
+open Microsoft.eShopWeb.Web
 open Microsoft.eShopWeb.Web.Domain
+open Domain
+open Microsoft.eShopWeb.Web.Persistence
+open System.Linq
+open Microsoft.EntityFrameworkCore
+open EntityFrameworkCore.FSharp.DbContextHelpers
+open Microsoft.FSharp.Core.Option
 
 module BasketDomain =
 
-  type BasketItem =
-    { Id: int
-      CatalogItemId: Guid
-      ProductName: string
-      UnitPrice: decimal
-      OldUnitPrice: decimal
-      Quantity: int
-      PictureUri: string option }
+  let basketTotal basket =
+    let sum =
+      Seq.sumBy (fun i -> i.UnitPrice * Convert.ToDecimal i.Quantity) basket.Items
 
-  type Basket =
-    { Id: int
-      Items: BasketItem list
-      BuyerId: string option }
+    Math.Round(sum, 2)
 
-    member this.Total() =
-      let sum =
-        List.sumBy (fun i -> i.UnitPrice * Convert.ToDecimal i.Quantity) this.Items
-
-      Math.Round(sum, 2)
-
-  let mapCatalogItem id (catalogItem: CatalogItem) : BasketItem =
-    { Id = id
+  let mapCatalogItemToBasketItem basketId (catalogItem: CatalogItem) : BasketItem =
+    { Id = 0
       CatalogItemId = catalogItem.Id
       ProductName = catalogItem.Name
       UnitPrice = catalogItem.Price
       OldUnitPrice = catalogItem.Price
       Quantity = 1
-      PictureUri = Some catalogItem.PictureUri }
+      BasketId = basketId
+      PictureUri = catalogItem.PictureUri }
 
   let productFallbackImageUri = "/images/brand.png"
 
-  let basketFromCatalog catalogItems =
-    { Id = 1
-      Items = List.mapi mapCatalogItem catalogItems
-      BuyerId = None }
 
-  let addItemToBasket basket (catalogItem: CatalogItem) =
-    // let id = form.TryGetString "id" |> Option.map int
+  let getCatalogItem (db: ShopContext) productId =
+    async {
+      let! items = db.CatalogItems.Where(fun ci -> ci.Id = productId) |> toListAsync
+
+      return items |> List.tryHead
+    }
+
+
+  let addItemToBasket quantity basket (catalogItem: CatalogItem) =
+    let mapBasketItems = mapCatalogItemToBasketItem basket.Id
+
     let item: BasketItem option =
-      basket.Items |> List.tryFind (fun i -> i.CatalogItemId = catalogItem.Id)
+      basket.Items |> Seq.tryFind (fun i -> i.CatalogItemId = catalogItem.Id)
 
     match item with
     | None ->
-      let items =
-        basket.Items
-        |> List.append [ (mapCatalogItem (basket.Items.Length + 1) catalogItem) ]
+      let items = basket.Items |> Seq.append [ (mapBasketItems catalogItem) ]
 
-      { basket with Items = items }
+      { basket with Items = items.ToList() }
     | Some item ->
-      let quantity = item.Quantity + 1
 
-      let items =
-        basket.Items
-        |> List.map (fun i ->
-          if i.CatalogItemId = catalogItem.Id then
-            { i with Quantity = quantity }
-          else
-            i)
+      basket.Items
+      |> Seq.iter (fun i ->
+        if i.CatalogItemId = catalogItem.Id then
+          i.Quantity <- item.Quantity + quantity)
+      |> ignore
+      basket
 
-      { basket with Items = items }
+  let updateBasket (db: ShopContext) (quantity: int) productId =
+    async {
+      let! catalogItem =
+        match productId with
+        | Some pId -> pId |> getCatalogItem db
+        | None -> async { return None }
+
+      let! existingBasket =
+        (db.Baskets.Include(fun b -> b.Items).OrderBy(fun b -> b.Id)) |> tryFirstAsync
+
+      let basket = existingBasket |> defaultValue emptyBasket
+
+      let updatedBasket =
+        catalogItem
+        |> map (basket |> addItemToBasket quantity)
+        |> defaultValue basket
+
+      try
+        match updatedBasket.Id with
+        | id when id = Guid.Empty -> db.Baskets.Add updatedBasket |> ignore
+        | _ -> ()
+
+        Seq.iter (
+          fun (i: BasketItem) ->
+            match i.Id with
+            | 0 ->
+              db.BasketItems.Add i |> ignore
+            | _ -> ())
+          updatedBasket.Items
+
+        do! saveChangesAsync' db |> Async.Ignore
+        return Some quantity
+      with exp ->
+        match productId with
+        | Some id -> printfn $"Error updating basket for Product {id}"; printfn $"{exp}"
+        | None -> printfn "No product specified to be added to basket"
+        return None
+    }

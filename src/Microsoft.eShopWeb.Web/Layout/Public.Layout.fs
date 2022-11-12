@@ -10,13 +10,18 @@ module PublicLayout =
   type HeadMetadata = { Title: string; Description: string }
 
   module Template =
+    open Domain
+    open System.Linq
+
     let styles = [ link [ href "/css/site.css"; rel "stylesheet" ] ]
     let head elems = head [] elems
 
     let meta metadata =
       [ Elem.title [] [ raw $"FShopOnWeb - {metadata.Title}" ] ]
 
-    let navBar =
+    let navBar (basket: Basket) =
+      let itemsCount = basket.Items |> Seq.map (fun i -> i.Quantity) |> Seq.sum
+
       header
         [ class' "esh-app-header" ]
         [ div
@@ -43,7 +48,7 @@ module PublicLayout =
                     [ a
                         [ class' "esh-basketstatus"; href "/basket" ]
                         [ div [ class' "esh-basketstatus-image" ] [ img [ src "/images/cart.png" ] ]
-                          div [ class' "esh-basketstatus-badge" ] [ raw "0" ] ] ] ] ] ]
+                          div [ class' "esh-basketstatus-badge" ] [ raw (itemsCount.ToString()) ] ] ] ] ] ]
 
     let hero =
       section
@@ -65,9 +70,9 @@ module PublicLayout =
   let head metadata =
     Template.head (Template.styles @ Template.meta metadata)
 
-  let body elems =
+  let body elems basket =
     body
       [ class' "m-0" ]
-      [ div [ class' "esh-app-wrapper" ] ([ Template.navBar; Template.hero ] @ elems @ [ Template.footer ]) ]
+      [ div [ class' "esh-app-wrapper" ] ([ Template.navBar basket; Template.hero ] @ elems @ [ Template.footer ]) ]
 
   let layout head body = html [ lang "en" ] [ head; body ]

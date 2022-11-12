@@ -1,10 +1,9 @@
 namespace Microsoft.eShopWeb.Web
 
-open Microsoft.EntityFrameworkCore
-open Domain
-
 module Persistence =
   open System
+  open Microsoft.EntityFrameworkCore
+  open Domain
 
   type ShopContext(options: DbContextOptions<ShopContext>) =
     inherit DbContext(options)
@@ -12,9 +11,23 @@ module Persistence =
     [<DefaultValue>]
     val mutable private _catalogItems: DbSet<CatalogItem>
 
+    [<DefaultValue>]
+    val mutable private _baskets: DbSet<Basket>
+
+    [<DefaultValue>]
+    val mutable private _basketItems: DbSet<BasketItem>
+
     member this.CatalogItems
       with get () = this._catalogItems
       and set v = this._catalogItems <- v
+
+    member this.Baskets
+      with get () = this._baskets
+      and set v = this._baskets <- v
+
+    member this.BasketItems
+      with get () = this._basketItems
+      and set v = this._basketItems <- v
 
   module Seeding =
     type CatalogBrands =
@@ -85,3 +98,11 @@ module Persistence =
     context.Database.EnsureCreated() |> ignore
     context.CatalogItems.AddRange Seeding.catalogItems
     context.SaveChanges()
+
+module Async =
+  open System.Threading.Tasks
+
+  let startTaskFromAsync (comp: Async<'a>) =
+      Async.StartAsTask comp
+  let startTaskFromAsyncUnit (comp: Async<unit>) =
+      Async.StartAsTask comp :> Task

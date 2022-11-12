@@ -10,15 +10,18 @@ open Microsoft.eShopWeb.Web.Persistence
 open Microsoft.EntityFrameworkCore
 open EntityFrameworkCore.FSharp.DbContextHelpers
 open Microsoft.AspNetCore.Http
+open Domain
 
 module HomePage =
 
   type Props =
     { FiltersProps: CatalogFiltersComponent.Props
       GridProps: CatalogGridComponent.Props
-      PagerProps: CatalogPagerComponent.Props }
+      PagerProps: CatalogPagerComponent.Props
+      Basket: Basket }
 
   module private Template =
+    open Microsoft.FSharp.Core.Option
     let metadata: PublicLayout.HeadMetadata = { Title = "Home"; Description = "" }
 
     let head = PublicLayout.head metadata
@@ -31,6 +34,7 @@ module HomePage =
             [ CatalogPagerComponent.cmpt props.PagerProps
               CatalogGridComponent.cmpt props.GridProps
               CatalogPagerComponent.cmpt props.PagerProps ] ]
+        props.Basket
 
     /// <summary>
     /// Generates the <see cref="XmlNode" /> rendering for the Home page
@@ -39,6 +43,8 @@ module HomePage =
       task {
         let! dbItems =
           toListTaskAsync (db.CatalogItems.Include(fun i -> i.CatalogBrand).Include(fun i -> i.CatalogType))
+        let! existingBasket = db.Baskets.Include(fun b -> b.Items) |> tryFirstTaskAsync
+        let basket = existingBasket |> defaultValue emptyBasket
 
         let items = List.ofSeq (dbItems)
         let brands = List.map (fun i -> i.CatalogBrand.Name) items |> List.distinct
@@ -49,10 +55,16 @@ module HomePage =
             GridProps = { CatalogItems = items }
             PagerProps =
               { ItemsCount = items.Length
-                CurrentPage = 1 } }
+                CurrentPage = 1 }
+            Basket = basket }
 
         return PublicLayout.layout head (body props)
       }
 
   let handler: HttpHandler =
-    Services.inject<ShopContext> (fun db -> db |> Template.page |> Response.ofHtmlTask)
+    Services.inject<ShopContext> (fun db ->
+      fun ctx ->
+        task {
+          let! html = db |> Template.page
+          return Response.ofHtml html ctx
+        })

@@ -29,3 +29,27 @@ module Domain =
       CatalogTypeId: int
       CatalogBrand: CatalogBrand
       CatalogType: CatalogType }
+
+  [<CLIMutable>]
+  type BasketItem =
+    { [<Key>]
+      Id: int
+      CatalogItemId: Guid
+      ProductName: string
+      UnitPrice: decimal
+      OldUnitPrice: decimal
+      mutable Quantity: int
+      PictureUri: string
+      BasketId: Guid }
+
+  [<CLIMutable>]
+  type Basket =
+    { [<Key>]
+      Id: Guid
+      Items: BasketItem seq
+      BuyerId: Nullable<Guid> }
+
+  let emptyBasket =
+    { Id = Unchecked.defaultof<Guid>
+      Items = []
+      BuyerId = Nullable() }
