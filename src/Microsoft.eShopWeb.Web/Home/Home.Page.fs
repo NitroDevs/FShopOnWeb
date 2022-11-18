@@ -9,8 +9,6 @@ open Microsoft.eShopWeb.Web.Home
 open Microsoft.eShopWeb.Web.Persistence
 open Microsoft.EntityFrameworkCore
 open EntityFrameworkCore.FSharp.DbContextHelpers
-open Microsoft.AspNetCore.Http
-open Domain
 
 module HomePage =
 
