@@ -11,7 +11,6 @@ open System.Linq
 open Microsoft.EntityFrameworkCore
 
 module BasketPage =
-  open System
 
   module private Template =
 

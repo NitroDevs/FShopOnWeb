@@ -14,6 +14,7 @@ open Microsoft.EntityFrameworkCore
 open Persistence
 
 module Program =
+  open Microsoft.eShopWeb.Web.Account.Login
 
   // let getById =
   //   fun (repository) -> fun (id: Guid) -> repository |> List.tryFind (fun x -> x.Id = id)
@@ -68,6 +69,8 @@ module Program =
 
           get "/basket" BasketPage.get
           post "/basket" BasketPage.post
+
+          get "/identity/account/login" LoginPage.handler
 
           //get "/catalogItems/{id:guid}" (Request.mapRoute getCatalogItemByIdFromRoute responseHandler)
           ]

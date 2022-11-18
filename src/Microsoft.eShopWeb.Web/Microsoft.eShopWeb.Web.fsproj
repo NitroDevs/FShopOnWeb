@@ -7,6 +7,7 @@
     <Compile Include="Persistence.fs" />
     <Compile Include="Request.fs" />
     <Compile Include="Layout\Public.Layout.fs" />
+    <Compile Include="Account\Login\Login.Page.fs" />
     <Compile Include="Home\CatalogFilters.Component.fs" />
     <Compile Include="Home\CatalogGrid.Component.fs" />
     <Compile Include="Home\CatalogPager.Component.fs" />
