@@ -3,7 +3,6 @@ namespace Microsoft.eShopWeb.Web.Basket
 open System
 open Microsoft.eShopWeb.Web
 open Microsoft.eShopWeb.Web.Domain
-open Domain
 open Microsoft.eShopWeb.Web.Persistence
 open System.Linq
 open Microsoft.EntityFrameworkCore

@@ -11,7 +11,6 @@ module PublicLayout =
 
   module Template =
     open Domain
-    open System.Linq
 
     let styles = [ link [ href "/css/site.css"; rel "stylesheet" ] ]
     let head elems = head [] elems

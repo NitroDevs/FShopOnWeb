@@ -4,14 +4,12 @@ open Falco
 open Falco.Routing
 open Falco.HostBuilder
 open Microsoft.AspNetCore.Builder
-open System
 open EntityFrameworkCore.FSharp.Extensions
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.eShopWeb.Web.Persistence
 open Microsoft.eShopWeb.Web.Home
 open Microsoft.eShopWeb.Web.Basket
 open Microsoft.EntityFrameworkCore
-open Persistence
 
 module Program =
   open Microsoft.eShopWeb.Web.Account.Login
