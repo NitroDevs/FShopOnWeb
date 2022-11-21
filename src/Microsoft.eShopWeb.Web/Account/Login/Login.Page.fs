@@ -19,12 +19,12 @@ module LoginPage =
 
   module private Template =
 
-    let metadata: PublicLayout.HeadMetadata = { Title = "Login"; Description = "" }
+    let metadata: AccountLayout.HeadMetadata = { Title = "Login"; Description = "" }
 
-    let head = PublicLayout.head metadata
+    let head = AccountLayout.head metadata
 
     let body props: XmlNode =
-      PublicLayout.body
+      AccountLayout.body
           [
             div
               [ class' "container account-login-container" ]
@@ -69,7 +69,7 @@ module LoginPage =
     /// Generates the <see cref="XmlNode" /> rendering for the Login page
     /// </summary>
     let page props =
-      PublicLayout.layout head (body props)
+      AccountLayout.layout head (body props)
 
   let handler: HttpHandler =
     Services.inject<ShopContext> (fun db ->
