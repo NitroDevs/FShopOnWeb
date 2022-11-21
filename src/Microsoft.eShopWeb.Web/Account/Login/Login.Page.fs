@@ -31,7 +31,38 @@ module LoginPage =
               [ h2 [] [ raw "Log in"]
                 div [ class' "row" ] [
                   div [ class' "col-md-12" ] [
-                    section [] [] ] ] ] ] // TODO: finish this HTML
+                    section [ ] [ Elem.form [ method "post"; novalidate ] [
+                      hr []
+                      div [ class' "text-danger validation-summary-valid" ] [ ul [] [ li [style "display:none" ] [] ] ]
+                      div [ class' "form-group" ] [
+                        Elem.label [ for' "Input_Email" ] [ raw "Email" ]
+                        input [ class' "form-control"; type' "email"; id "Input_Email"; name "Input.Email"; value "" ]
+                        Elem.span [ class' "text-danger field-validation-valid" ] [] ] // TODO: data-X markup
+                      div [ class' "form-group" ] [
+                        Elem.label [ for' "Input_Password" ] [ raw "Password" ]
+                        input [ class' "form-control"; type' "password"; id "Input_Password"; name "Input.Password"; ]
+                        Elem.span [ class' "text-danger field-validation-valid" ] [] ] // TODO: data-X markup
+                      div [ class' "form-group" ] [
+                        div [ class' "checkbox" ] [
+                          Elem.label [ for' "Input_RememberMe" ] [
+                            input [ type' "checkbox"; id "Input_RememberMe"; name "Input.RememberMe"; value "true"; ]  // TODO: data-X markup
+                            raw "Remember me?" ] ] ]
+                      div [ class' "form-group" ] [ button [ type' "submit"; class' "btn btn-default" ] [ raw "Log in"] ]
+                      div [ class' "form-group" ] [
+                        p [] [ a [ href "/Identity/Account/ForgotPassword" ] [ raw "Forgot your password?" ] ]
+                        p [] [ a [ href "/Identity/Account/Register?returnUrl=%2F"] [ raw "Register as a new user" ] ] ]
+                      p [] [ raw "Note that for demo purposes you don't need to register and can login with these credentials:" ]
+                      p [] [
+                        raw "User: "
+                        b [] [ raw "demouser@microsoft.com" ]
+                        raw " OR "
+                        b [] [ raw "admin@microsoft.com" ] ]
+                      p [] [
+                        raw " Password: "
+                        b [] [ raw "Pass@word1" ] ]
+                      input [ name "__RequestVerificationToken"; type' "hidden"; value "CfDJ8JYtL6prw3BBhkC7TvYaDIZZ_oxnJ_V_JLkcwX9koXookmDnqOuLzh-Gaq7_CPbywFqGS9N3cs3Tc2Pu7PsDqewH2j0RHGjfuGR38gtaZKovrU88mhVimoembgpa3tvspyEB_vvimhsVzK3ZyUGws3M"]
+                      input [ name "Input.RememberMe"; type' "hidden"; value "false" ] ] ] ] ] ] ]
+
           props.Basket
 
     /// <summary>
