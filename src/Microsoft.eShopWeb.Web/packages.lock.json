@@ -2,6 +2,15 @@
   "version": 1,
   "dependencies": {
     "net7.0": {
+      "Donald": {
+        "type": "Direct",
+        "requested": "[8.0.2, )",
+        "resolved": "8.0.2",
+        "contentHash": "tdBfIwpF+FdGMSDTt4QkGK65Q3iG2OinuxZXpXkHbsh2Ff3g02YjF+SgUeOA3nqkZUCIfCr2bi4M1wfjLv6MhA==",
+        "dependencies": {
+          "FSharp.Core": "6.0.0"
+        }
+      },
       "EntityFrameworkCore.FSharp": {
         "type": "Direct",
         "requested": "[6.0.7, )",
