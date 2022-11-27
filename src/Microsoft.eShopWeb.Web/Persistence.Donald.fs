@@ -126,7 +126,7 @@ module Persistence_Donald =
       { Id = id
         Items = Seq.toList items
         BuyerId = buyerId } |> Some
-    | None -> option<Basket>.None
+    | None -> None
 
   let basketById conn id =
     let sql = "
