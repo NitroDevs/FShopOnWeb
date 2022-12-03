@@ -2,6 +2,16 @@
   "version": 1,
   "dependencies": {
     "net7.0": {
+      "Dapper.FSharp": {
+        "type": "Direct",
+        "requested": "[4.0.0, )",
+        "resolved": "4.0.0",
+        "contentHash": "j7/Dzo/HUSeHmXziBAgwDvSF51OTJuRxv/TEorqgC+14yxaovFhNyhaCngEq4OJTpMlqrwvJ8LEaHHeFSwY+LA==",
+        "dependencies": {
+          "Dapper": "2.0.123",
+          "FSharp.Core": "6.0.6"
+        }
+      },
       "EntityFrameworkCore.FSharp": {
         "type": "Direct",
         "requested": "[6.0.7, )",
@@ -37,6 +47,11 @@
           "Microsoft.EntityFrameworkCore.Sqlite.Core": "7.0.0",
           "SQLitePCLRaw.bundle_e_sqlite3": "2.1.2"
         }
+      },
+      "Dapper": {
+        "type": "Transitive",
+        "resolved": "2.0.123",
+        "contentHash": "RDFF4rBLLmbpi6pwkY7q/M6UXHRJEOerplDGE5jwEkP/JGJnBauAClYavNKJPW1yOTWRPIyfj4is3EaJxQXILQ=="
       },
       "Falco.Markup": {
         "type": "Transitive",

@@ -5,6 +5,8 @@
   <ItemGroup>
     <Compile Include="Domain.fs" />
     <Compile Include="Persistence.fs" />
+    <Compile Include="Domain.Dapper.fs" />
+    <Compile Include="Persistence.Dapper.fs" />
     <Compile Include="Request.fs" />
     <Compile Include="Layout\Account.Layout.fs" />
     <Compile Include="Layout\Public.Layout.fs" />
@@ -25,5 +27,6 @@
     <PackageReference Include="EntityFrameworkCore.FSharp" Version="6.0.7" />
     <PackageReference Include="Falco" Version="4.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0" />
+    <PackageReference Include="Dapper.FSharp" Version="4.0.0" />
   </ItemGroup>
 </Project>

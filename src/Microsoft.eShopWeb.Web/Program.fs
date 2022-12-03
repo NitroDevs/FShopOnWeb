@@ -47,6 +47,8 @@ module Program =
   [<EntryPoint>]
   let main args =
 
+    Dapper.FSharp.OptionTypes.register() |> ignore
+
     // This webHost computation expression gives us access to different hooks into the WebApplicationHost (eg DI and middleware)
     // https://github.com/pimbrouwers/Falco/issues/14#issue-603574072
     webHost args {
