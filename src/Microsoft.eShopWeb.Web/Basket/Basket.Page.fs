@@ -13,6 +13,8 @@ open Microsoft.EntityFrameworkCore
 module BasketPage =
 
   module private Template =
+    open Microsoft.AspNetCore.Http
+    open Falco.Markup.Text
 
     let metadata: PublicLayout.HeadMetadata = { Title = "Basket"; Description = "" }
 
@@ -21,32 +23,32 @@ module BasketPage =
     let messageFromQuery (ctx: HttpContext) =
       let query = Request.getQuery ctx
       match query.TryGetString "added", query.TryGetString "removed", query.TryGetString "error" with
-      | Some quantity, _, _ -> 
+      | Some quantity, _, _ ->
         Some $"✓ {quantity} item(s) added to basket successfully!"
-      | _, Some _, _ -> 
+      | _, Some _, _ ->
         Some "✓ Item removed from basket successfully!"
-      | _, _, Some "notfound" -> 
+      | _, _, Some "notfound" ->
         Some "⚠ Item not found."
-      | _, _, Some "removenotfound" -> 
+      | _, _, Some "removenotfound" ->
         Some "⚠ Could not remove item from basket."
       | _ -> None
 
     let messageDiv message =
       match message with
-      | Some msg when msg.StartsWith "✓" ->
-        div [ Markup.Attr.class' "alert alert-success alert-dismissible fade show"; Markup.Attr.attr "role" "alert" ]
+      | Some (msg: string) when msg.StartsWith "✓" ->
+        div [ Markup.Attr.class' "alert alert-success alert-dismissible fade show"; Markup.Attr.dataAttr "role" "alert" ]
           [ raw msg
-            button [ Markup.Attr.type' "button"; Markup.Attr.class' "btn-close"; Markup.Attr.attr "data-bs-dismiss" "alert" ] [] ]
+            button [ Markup.Attr.type' "button"; Markup.Attr.class' "btn-close"; Markup.Attr.dataAttr "data-bs-dismiss" "alert" ] [] ]
       | Some msg when msg.StartsWith "⚠" ->
-        div [ Markup.Attr.class' "alert alert-warning alert-dismissible fade show"; Markup.Attr.attr "role" "alert" ]
+        div [ Markup.Attr.class' "alert alert-warning alert-dismissible fade show"; Markup.Attr.dataAttr "role" "alert" ]
           [ raw msg
-            button [ Markup.Attr.type' "button"; Markup.Attr.class' "btn-close"; Markup.Attr.attr "data-bs-dismiss" "alert" ] [] ]
+            button [ Markup.Attr.type' "button"; Markup.Attr.class' "btn-close"; Markup.Attr.dataAttr "data-bs-dismiss" "alert" ] [] ]
       | _ -> div [] []
 
     let body basket (ctx: HttpContext) =
       let message = messageFromQuery ctx
-      PublicLayout.body 
-        [ div [ Markup.Attr.class' "container" ] 
+      PublicLayout.body
+        [ div [ Markup.Attr.class' "container" ]
             [ messageDiv message
               div [] (BasketComponent.cmpt basket) ] ] basket
 
