@@ -18,10 +18,39 @@ module BasketPage =
 
     let head = PublicLayout.head metadata
 
-    let body basket =
-      PublicLayout.body [ div [ Markup.Attr.class' "container" ] (BasketComponent.cmpt basket) ] basket
+    let messageFromQuery (ctx: HttpContext) =
+      let query = Request.getQuery ctx
+      match query.TryGetString "added", query.TryGetString "removed", query.TryGetString "error" with
+      | Some quantity, _, _ -> 
+        Some $"✓ {quantity} item(s) added to basket successfully!"
+      | _, Some _, _ -> 
+        Some "✓ Item removed from basket successfully!"
+      | _, _, Some "notfound" -> 
+        Some "⚠ Item not found."
+      | _, _, Some "removenotfound" -> 
+        Some "⚠ Could not remove item from basket."
+      | _ -> None
 
-    let page basket = PublicLayout.layout head (body basket)
+    let messageDiv message =
+      match message with
+      | Some msg when msg.StartsWith "✓" ->
+        div [ Markup.Attr.class' "alert alert-success alert-dismissible fade show"; Markup.Attr.attr "role" "alert" ]
+          [ raw msg
+            button [ Markup.Attr.type' "button"; Markup.Attr.class' "btn-close"; Markup.Attr.attr "data-bs-dismiss" "alert" ] [] ]
+      | Some msg when msg.StartsWith "⚠" ->
+        div [ Markup.Attr.class' "alert alert-warning alert-dismissible fade show"; Markup.Attr.attr "role" "alert" ]
+          [ raw msg
+            button [ Markup.Attr.type' "button"; Markup.Attr.class' "btn-close"; Markup.Attr.attr "data-bs-dismiss" "alert" ] [] ]
+      | _ -> div [] []
+
+    let body basket (ctx: HttpContext) =
+      let message = messageFromQuery ctx
+      PublicLayout.body 
+        [ div [ Markup.Attr.class' "container" ] 
+            [ messageDiv message
+              div [] (BasketComponent.cmpt basket) ] ] basket
+
+    let page basket ctx = PublicLayout.layout head (body basket ctx)
 
   let get: HttpHandler =
     Services.inject<ShopContext> (fun db ->
@@ -33,7 +62,7 @@ module BasketPage =
 
           let basket = existingBasket |> defaultValue (emptyBasket)
 
-          return Response.ofHtml (Template.page basket) ctx
+          return Response.ofHtml (Template.page basket ctx) ctx
         })
 
   let post: HttpHandler =
@@ -64,3 +93,16 @@ module BasketPage =
           | Some q -> Response.redirectPermanently $"/basket?added={q}" ctx
           | None -> Response.redirectPermanently "/basket?error=notfound" ctx
       })
+
+  let remove: HttpHandler =
+    Services.inject<ShopContext> (fun db ->
+      let mapAsync = fun (form: FormCollectionReader) ->
+        form.TryGetGuid "catalogItemId"
+        |> function
+        | Some catalogItemId -> BasketDomain.removeBasketItem db catalogItemId |> Async.StartAsTask
+        | None -> System.Threading.Tasks.Task.FromResult(false)
+
+      Request.mapFormAsync mapAsync (fun success ->
+        match success with
+        | true -> Response.redirectPermanently "/basket?removed=true"
+        | false -> Response.redirectPermanently "/basket?error=removenotfound"))

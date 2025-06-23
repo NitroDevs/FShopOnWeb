@@ -96,3 +96,39 @@ module BasketDomain =
         | None -> printfn "No product specified to be added to basket"
         return None
     }
+
+  let removeItemFromBasket (catalogItemId: Guid) (basket: Basket) =
+    let remainingItems = 
+      basket.Items 
+      |> Seq.filter (fun i -> i.CatalogItemId <> catalogItemId)
+      |> List.ofSeq
+
+    { basket with Items = remainingItems }
+
+  let removeBasketItem (db: ShopContext) (catalogItemId: Guid) =
+    async {
+      let! existingBasket =
+        (db.Baskets.Include(fun b -> b.Items).OrderBy(fun b -> b.Id)) |> tryFirstAsync
+
+      match existingBasket with
+      | None -> return false // No basket exists
+      | Some basket ->
+        let itemToRemove = 
+          basket.Items |> Seq.tryFind (fun i -> i.CatalogItemId = catalogItemId)
+        
+        match itemToRemove with
+        | None -> return false // Item not found in basket
+        | Some item ->
+          try
+            // Remove the item from the database
+            let dbItem = db.BasketItems.Find(item.Id)
+            if dbItem <> null then
+              db.BasketItems.Remove(dbItem) |> ignore
+              do! saveChangesAsync' db |> Async.Ignore
+              return true
+            else
+              return false
+          with exp ->
+            printfn $"Error removing item {catalogItemId} from basket: {exp}"
+            return false
+    }
