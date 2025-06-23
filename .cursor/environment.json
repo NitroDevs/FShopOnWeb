@@ -1,0 +1,13 @@
+{
+  "install": "dotnet restore && cd src/Microsoft.eShopWeb.Web && npm ci",
+  "terminals": [
+    {
+      "name": "Build CSS",
+      "command": "cd src/Microsoft.eShopWeb.Web && npm run start"
+    },
+    {
+      "name": "Run F# Web App",
+      "command": "cd src/Microsoft.eShopWeb.Web && dotnet run"
+    }
+  ]
+}
