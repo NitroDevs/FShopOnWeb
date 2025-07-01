@@ -349,6 +349,9 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+# SQLite database files
+*.sqlite*
+
 # App_Data directory - ignore all contents except .gitkeep
 **/App_Data/*
 !**/App_Data/.gitkeep
