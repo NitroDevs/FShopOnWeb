@@ -117,11 +117,12 @@ module BasketDomain =
           |> Seq.tryHead
         
         match itemToRemove with
-        | Some item -> db.BasketItems.Remove(item) |> ignore
-        | None -> ()
-
-        do! saveChangesAsync' db |> Async.Ignore
-        return Some catalogItemId
+        | Some item -> 
+            db.BasketItems.Remove(item) |> ignore
+            do! saveChangesAsync' db |> Async.Ignore
+            return Some catalogItemId
+        | None -> 
+            return None
       with exp ->
         printfn $"Error removing item {catalogItemId} from basket"; printfn $"{exp}"
         return None
