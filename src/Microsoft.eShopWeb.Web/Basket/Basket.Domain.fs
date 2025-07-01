@@ -58,9 +58,7 @@ module BasketDomain =
       |> ignore
       basket
 
-  let removeItemFromBasket catalogItemId basket =
-    let filteredItems = basket.Items |> Seq.filter (fun i -> i.CatalogItemId <> catalogItemId)
-    { basket with Items = filteredItems.ToList() }
+
 
   let updateBasket (db: ShopContext) (quantity: int) productId =
     async {
@@ -107,8 +105,6 @@ module BasketDomain =
         (db.Baskets.Include(fun b -> b.Items).OrderBy(fun b -> b.Id)) |> tryFirstAsync
 
       let basket = existingBasket |> defaultValue emptyBasket
-
-      let updatedBasket = removeItemFromBasket catalogItemId basket
 
       try
         // Remove the basket item from the database
