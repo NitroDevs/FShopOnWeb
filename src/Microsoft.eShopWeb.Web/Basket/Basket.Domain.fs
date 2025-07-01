@@ -58,6 +58,10 @@ module BasketDomain =
       |> ignore
       basket
 
+  let removeItemFromBasket catalogItemId basket =
+    let filteredItems = basket.Items |> Seq.filter (fun i -> i.CatalogItemId <> catalogItemId)
+    { basket with Items = filteredItems.ToList() }
+
   let updateBasket (db: ShopContext) (quantity: int) productId =
     async {
       let! catalogItem =
@@ -94,5 +98,31 @@ module BasketDomain =
         match productId with
         | Some id -> printfn $"Error updating basket for Product {id}"; printfn $"{exp}"
         | None -> printfn "No product specified to be added to basket"
+        return None
+    }
+
+  let removeFromBasket (db: ShopContext) catalogItemId =
+    async {
+      let! existingBasket =
+        (db.Baskets.Include(fun b -> b.Items).OrderBy(fun b -> b.Id)) |> tryFirstAsync
+
+      let basket = existingBasket |> defaultValue emptyBasket
+
+      let updatedBasket = removeItemFromBasket catalogItemId basket
+
+      try
+        // Remove the basket item from the database
+        let itemToRemove = 
+          db.BasketItems.Where(fun bi -> bi.CatalogItemId = catalogItemId && bi.BasketId = basket.Id)
+          |> Seq.tryHead
+        
+        match itemToRemove with
+        | Some item -> db.BasketItems.Remove(item) |> ignore
+        | None -> ()
+
+        do! saveChangesAsync' db |> Async.Ignore
+        return Some catalogItemId
+      with exp ->
+        printfn $"Error removing item {catalogItemId} from basket"; printfn $"{exp}"
         return None
     }
