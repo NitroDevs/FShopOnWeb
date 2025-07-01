@@ -24,9 +24,9 @@
       },
       "FSharp.Core": {
         "type": "Direct",
-        "requested": "[8.0.102, )",
-        "resolved": "8.0.102",
-        "contentHash": "LwrE/DaS/1vAykKNSPzNBuUw2wFMI0KZsjUJQUCfqXnH8MonDxDliTpeA8qpcAvvV2OT1op2oCi9SrVoithWFA=="
+        "requested": "[8.0.200, )",
+        "resolved": "8.0.200",
+        "contentHash": "qnxoF3Fu0HzfOeYdrwmQOsLP1v+OtOMSIYkNVUwf6nGqWzL03Hh4r6VFCvCb54jlsgtt3WADVYkKkrgdeY5kiQ=="
       },
       "Microsoft.EntityFrameworkCore.Sqlite": {
         "type": "Direct",
