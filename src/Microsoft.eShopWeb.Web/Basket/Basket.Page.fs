@@ -49,6 +49,21 @@ module BasketPage =
         | None -> Response.redirectPermanently "/basket?error=notfound"
         | Some q -> Response.redirectPermanently $"/basket?added={q}"))
 
+  let remove: HttpHandler =
+    Services.inject<ShopContext> (fun db ->
+
+      let mapAsync = fun (form: FormCollectionReader) ->
+        form.TryGetGuid "id"
+        |> fun catalogItemId ->
+          match catalogItemId with
+          | Some id -> BasketDomain.removeFromBasket db id |> Async.StartAsTask
+          | None -> async { return None } |> Async.StartAsTask
+
+      Request.mapFormAsync mapAsync (fun result ->
+        match result with
+        | None -> Response.redirectPermanently "/basket?error=notfound"
+        | Some _ -> Response.redirectPermanently "/basket?removed=success"))
+
   // This uses a more low-level approach to reading the form
   let postAlternate: HttpHandler =
     Services.inject<ShopContext> (fun db -> fun ctx ->
