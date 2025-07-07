@@ -1,4 +1,4 @@
-﻿module Tests
+﻿module RemoveFromBasket
 
 open System
 open System.Linq
