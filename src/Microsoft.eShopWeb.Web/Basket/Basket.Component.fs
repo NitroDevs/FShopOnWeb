@@ -29,19 +29,23 @@ module BasketComponent =
               section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw item.ProductName ]
               section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw (item.UnitPrice.ToString "C") ]
               section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw (item.Quantity.ToString()) ]
-              section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw ((decimal(item.Quantity) * item.UnitPrice).ToString "C" ) ] ] ]
+              section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw ((decimal(item.Quantity) * item.UnitPrice).ToString "C" ) ]
+              section [ class' "esh-basket-item esh-basket-item--middle col" ] 
+                [ Elem.form
+                    [ method "post"; action "/basket/remove" ]
+                    [ input [ type' "hidden"; name "id"; value $"{item.CatalogItemId}" ]
+                      input [ class' "btn btn-danger btn-sm"; type' "submit"; value "Remove" ] ] ] ] ]
 
     let itemsTmpl items =
-      [ Elem.form
-          [ method "post" ]
-          [ article
-              [ class' "esh-basket-titles row row-cols-auto justify-content-between" ]
-              [ section [ class' "esh-basket-title col" ] [ raw "Product" ]
-                section [ class' "esh-basket-title col hidden-lg-down" ] []
-                section [ class' "esh-basket-title col" ] [ raw "Price" ]
-                section [ class' "esh-basket-title col" ] [ raw "Quantity" ]
-                section [ class' "esh-basket-title col" ] [ raw "Cost" ] ]
-            div [ class' "esh-catalog-items" ] (Seq.mapi itemTmpl items |> List.ofSeq) ] ]
+      [ article
+          [ class' "esh-basket-titles row row-cols-auto justify-content-between" ]
+          [ section [ class' "esh-basket-title col" ] [ raw "Product" ]
+            section [ class' "esh-basket-title col hidden-lg-down" ] []
+            section [ class' "esh-basket-title col" ] [ raw "Price" ]
+            section [ class' "esh-basket-title col" ] [ raw "Quantity" ]
+            section [ class' "esh-basket-title col" ] [ raw "Cost" ]
+            section [ class' "esh-basket-title col" ] [ raw "Actions" ] ]
+        div [ class' "esh-catalog-items" ] (Seq.mapi itemTmpl items |> List.ofSeq) ]
 
     let noItemsTmpl =
       [ h3 [ class' "esh-catalog-items row" ] [ raw "Basket is empty." ]
