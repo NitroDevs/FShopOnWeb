@@ -28,7 +28,21 @@ module BasketComponent =
                       class' "esh-basket-image" ] ]
               section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw item.ProductName ]
               section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw (item.UnitPrice.ToString "C") ]
-              section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw (item.Quantity.ToString()) ]
+              section [ class' "esh-basket-item esh-basket-item--middle col" ] [
+                div [ class' "d-flex align-items-center" ] [
+                  Elem.form
+                    [ method "post"; action "/basket/update-quantity"; class' "d-inline me-1" ]
+                    [ input [ type' "hidden"; name "id"; value $"{item.CatalogItemId}" ]
+                      input [ type' "hidden"; name "quantity"; value $"{item.Quantity - 1}" ]
+                      input [ class' "btn btn-outline-secondary btn-sm"; type' "submit"; value "-" ] ]
+                  Elem.span [ class' "mx-2" ] [ raw (item.Quantity.ToString()) ]
+                  Elem.form
+                    [ method "post"; action "/basket/update-quantity"; class' "d-inline ms-1" ]
+                    [ input [ type' "hidden"; name "id"; value $"{item.CatalogItemId}" ]
+                      input [ type' "hidden"; name "quantity"; value $"{item.Quantity + 1}" ]
+                      input [ class' "btn btn-outline-secondary btn-sm"; type' "submit"; value "+" ] ]
+                ]
+              ]
               section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw ((decimal(item.Quantity) * item.UnitPrice).ToString "C" ) ]
               section [ class' "esh-basket-item esh-basket-item--middle col" ] 
                 [ Elem.form

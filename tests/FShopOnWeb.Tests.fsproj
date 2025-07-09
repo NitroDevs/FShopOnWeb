@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Include="Basket/RemoveFromBasket.fs" />
+    <Compile Include="Basket/UpdateBasketItemQuantity.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

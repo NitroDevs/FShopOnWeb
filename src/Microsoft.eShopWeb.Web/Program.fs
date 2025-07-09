@@ -68,6 +68,7 @@ module Program =
           get "/basket" BasketPage.get
           post "/basket" BasketPage.post
           post "/basket/remove" BasketPage.remove
+          post "/basket/update-quantity" BasketPage.updateQuantity
 
           get "/identity/account/login" LoginPage.handler
 
