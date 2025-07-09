@@ -64,6 +64,23 @@ module BasketPage =
         | None -> Response.redirectPermanently "/basket?error=notfound"
         | Some _ -> Response.redirectPermanently "/basket?removed=success"))
 
+  let updateQuantity: HttpHandler =
+    Services.inject<ShopContext> (fun db ->
+
+      let mapAsync = fun (form: FormCollectionReader) ->
+        let catalogItemId = form.TryGetGuid "id"
+        let quantity = form.TryGetInt "quantity"
+        
+        match catalogItemId, quantity with
+        | Some id, Some qty -> BasketDomain.updateBasketItemQuantity db id qty |> Async.StartAsTask
+        | _ -> async { return None } |> Async.StartAsTask
+
+      Request.mapFormAsync mapAsync (fun result ->
+        match result with
+        | None -> Response.redirectPermanently "/basket?error=updatefailed"
+        | Some 0 -> Response.redirectPermanently "/basket?removed=success"
+        | Some qty -> Response.redirectPermanently $"/basket?updated={qty}"))
+
   // This uses a more low-level approach to reading the form
   let postAlternate: HttpHandler =
     Services.inject<ShopContext> (fun db -> fun ctx ->

@@ -355,3 +355,6 @@ MigrationBackup/
 # App_Data directory - ignore all contents except .gitkeep
 **/App_Data/*
 !**/App_Data/.gitkeep
+
+# macOS
+**/.DS_Store
