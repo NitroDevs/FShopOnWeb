@@ -22,8 +22,8 @@
     <Watch Include="**\*.fs" Exclude="node_modules\**\*;**\*.js.map;obj\**\*;bin\**\*" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EntityFrameworkCore.FSharp" Version="6.0.7" />
-    <PackageReference Include="Falco" Version="4.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.6" />
+    <PackageReference Include="EntityFrameworkCore.FSharp" />
+    <PackageReference Include="Falco" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
   </ItemGroup>
 </Project>
