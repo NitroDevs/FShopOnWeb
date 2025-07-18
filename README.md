@@ -50,35 +50,6 @@ This will add the SQLite Explorer tray under the File Explorer where you can ini
 
 ![SQLite Explorer](./images/sqlite-vscode-explorer-tray.jpg)
 
-## Package Management
-
-This project uses [Central Package Management](https://docs.microsoft.com/en-us/nuget/consume-packages/central-package-management) to streamline dependency management and ensure consistent package versions across all projects.
-
-### How it works
-
-- Package versions are centrally defined in `Directory.Packages.props`
-- Individual project files (`*.fsproj`) reference packages without version attributes
-- All projects in the solution automatically use the centrally managed versions
-- Lock files (`packages.lock.json`) ensure reproducible builds across different environments
-
-### Benefits
-
-- **Consistency**: All projects use the same package versions
-- **Maintainability**: Update package versions in one place
-- **Reduced conflicts**: Eliminates version mismatches between projects
-- **Simplified updates**: Easier to upgrade packages across the entire solution
-
-### Adding new packages
-
-1. Add the package version to `Directory.Packages.props`:
-   ```xml
-   <PackageVersion Include="PackageName" Version="1.0.0" />
-   ```
-2. Reference the package in your project file without a version:
-   ```xml
-   <PackageReference Include="PackageName" />
-   ```
-
 ## Related Projects and Inspiration
 
 - [eShopOnWeb](https://github.com/dotnet-architecture/eShopOnWeb)
