@@ -9,8 +9,8 @@
     <!-- Main application packages -->
     <PackageVersion Include="EntityFrameworkCore.FSharp" Version="6.0.7" />
     <PackageVersion Include="Falco" Version="4.0.6" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.6" />
-    
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.18" />
+
     <!-- Test packages -->
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
