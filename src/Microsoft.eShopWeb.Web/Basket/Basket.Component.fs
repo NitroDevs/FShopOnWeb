@@ -28,7 +28,12 @@ module BasketComponent =
                       class' "esh-basket-image" ] ]
               section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw item.ProductName ]
               section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw (item.UnitPrice.ToString "C") ]
-              section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw (item.Quantity.ToString()) ]
+              section [ class' "esh-basket-item esh-basket-item--middle col" ] 
+                [ Elem.form
+                    [ method "post"; action "/basket/updateQuantity"; class' "d-inline-flex align-items-center gap-2" ]
+                    [ input [ type' "hidden"; name "id"; value $"{item.CatalogItemId}" ]
+                      input [ type' "number"; name "quantity"; value $"{item.Quantity}"; min "1"; max "100"; class' "form-control form-control-sm"; style "width: 80px;" ]
+                      input [ class' "btn btn-primary btn-sm"; type' "submit"; value "Update" ] ] ]
               section [ class' "esh-basket-item esh-basket-item--middle col" ] [ raw ((decimal(item.Quantity) * item.UnitPrice).ToString "C" ) ]
               section [ class' "esh-basket-item esh-basket-item--middle col" ] 
                 [ Elem.form

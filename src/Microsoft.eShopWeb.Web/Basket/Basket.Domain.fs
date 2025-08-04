@@ -123,3 +123,32 @@ module BasketDomain =
         printfn $"Error removing item {catalogItemId} from basket"; printfn $"{exp}"
         return None
     }
+
+  let updateItemQuantity (db: ShopContext) catalogItemId newQuantity =
+    async {
+      // Validate quantity first
+      if newQuantity <= 0 then
+        return None
+      else
+        let! existingBasket =
+          (db.Baskets.Include(fun b -> b.Items).OrderBy(fun b -> b.Id)) |> tryFirstAsync
+
+        let basket = existingBasket |> defaultValue emptyBasket
+
+        try
+          // Find the basket item to update
+          let itemToUpdate = 
+            db.BasketItems.Where(fun bi -> bi.CatalogItemId = catalogItemId && bi.BasketId = basket.Id)
+            |> Seq.tryHead
+          
+          match itemToUpdate with
+          | Some item -> 
+              item.Quantity <- newQuantity
+              do! saveChangesAsync' db |> Async.Ignore
+              return Some newQuantity
+          | None -> 
+              return None
+        with exp ->
+          printfn $"Error updating quantity for item {catalogItemId} to {newQuantity}"; printfn $"{exp}"
+          return None
+    }

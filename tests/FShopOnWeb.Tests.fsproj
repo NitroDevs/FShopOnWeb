@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="Basket/RemoveFromBasket.fs" />
+    <Compile Include="Basket/UpdateItemQuantity.fs" />
     <Compile Include="CentralPackageManagementTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
